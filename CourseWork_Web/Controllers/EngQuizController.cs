@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using CourseWork_Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
+//берутся 20 предложений рандомно
+//формируется массив ответов
+//сравнивается
+
 namespace CourseWork_Web.Controllers
 {
     public class EngQuizController : Controller
@@ -21,9 +25,7 @@ namespace CourseWork_Web.Controllers
         {
             var content = _db.Contents.OrderBy(c => Guid.NewGuid()).Take(20).ToList();
 
-        //берутся 20 предложений рандомно
-        //формируется массив ответов
-        //сравнивается
+        
 
             return View(content);
         }

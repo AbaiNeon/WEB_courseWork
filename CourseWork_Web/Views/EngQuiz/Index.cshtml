@@ -31,7 +31,9 @@
             <label for="radio4">Option 4</label>
         </div>
     </div>
-
+    <div class="questionNumber">
+        <span></span>/20
+    </div>
     <div class="row text-right form-group">
         <button id="btnNext" type="button" class="btn btn-primary">Next</button>
     </div>
@@ -60,113 +62,115 @@
 
 
 <script>
-        $(document).ready(function () {
-            var content = @Html.Raw(JsonConvert.SerializeObject(this.Model));
-            console.log(content);
+    $(document).ready(function () {
+        var content = @Html.Raw(JsonConvert.SerializeObject(this.Model));
+        console.log(content);
 
-            //var arr = shuffle(content).slice(11, 13);
-            var arr = getRandom(content, 3);
-            console.log(arr);
+        //var arr = shuffle(content).slice(11, 13);
+        var arr = getRandom(content, 3);
+        console.log(arr);
 
-            Render(content[0], arr);
-            var questionNumber = 1;
-            var rightAnswerCount = 0;
+        Render(content[0], arr);
+        var questionNumber = 1;
+        var rightAnswerCount = 0;
+        $('.questionNumber>span').text(questionNumber);
 
-            var userAnswers = [];
+        var userAnswers = [];
 
-            $('#btnNext').click(function () {
-                //формирование массива userAnswers
-                var radio = $('#answers input:radio:checked');
-                var userAnswer = radio.next().text();
-                userAnswers.push(userAnswer);
+        $('#btnNext').click(function () {
+            //формирование массива userAnswers
+            var radio = $('#answers input:radio:checked');
+            var userAnswer = radio.next().text();
+            userAnswers.push(userAnswer);
 
-                console.log(userAnswers);
+            console.log(userAnswers);
 
-                if (questionNumber < 20) {
-                    arr = getRandom(content, 3);
-                    Render(content[questionNumber], arr);
-                    questionNumber++;
+            if (questionNumber < 20) {
+                arr = getRandom(content, 3);
+                Render(content[questionNumber], arr);
+                
+                questionNumber++;
+                $('.questionNumber>span').text(questionNumber);
+            }
+            else {
 
-                }
-                else {
+                $('#btnNext')[0].disabled = true;
 
-                    $('#btnNext')[0].disabled = true;
-
-                    //сравниваем массивы для подсчета кол-ва правильных ответов
-                    for (var i = 0; i < content.length; i++) {
-                        if (content[i].Rus == userAnswers[i]) {
-                            rightAnswerCount++;
-                        }
+                //сравниваем массивы для подсчета кол-ва правильных ответов
+                for (var i = 0; i < content.length; i++) {
+                    if (content[i].Rus == userAnswers[i]) {
+                        rightAnswerCount++;
                     }
-
-                    //alert('Test completed. Right answers = ' + rightAnswerCount + '/' + content.length);
-                    $("#myModal").modal('show');
-                    $('.modal-body').html('Test completed. Right answers = ' + rightAnswerCount + ' / ' + content.length)
-
-                    //отправка по ajax результата серверу
-
                 }
 
+                //alert('Test completed. Right answers = ' + rightAnswerCount + '/' + content.length);
+                $("#myModal").modal('show');
+                $('.modal-body').html('Test completed. Right answers = ' + rightAnswerCount + ' / ' + content.length)
 
+                //отправка по ajax результата серверу
 
-            })
-
-
-        });
-
-        function shuffle(array) {
-            var currentIndex = array.length, temporaryValue, randomIndex;
-
-            // While there remain elements to shuffle...
-            while (0 !== currentIndex) {
-
-                // Pick a remaining element...
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex -= 1;
-
-                // And swap it with the current element.
-                temporaryValue = array[currentIndex];
-                array[currentIndex] = array[randomIndex];
-                array[randomIndex] = temporaryValue;
             }
 
-            return array;
+
+
+        })
+
+
+    });
+
+    function shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
         }
 
-        function getRandom(arr, n) {
-            var result = new Array(n),
-                len = arr.length,
-                taken = new Array(len);
-            if (n > len)
-                throw new RangeError("getRandom: more elements taken than available");
-            while (n--) {
-                var x = Math.floor(Math.random() * len);
-                result[n] = arr[x in taken ? taken[x] : x];
-                taken[x] = --len in taken ? taken[len] : len;
-            }
-            return result;
+        return array;
+    }
+
+    function getRandom(arr, n) {
+        var result = new Array(n),
+            len = arr.length,
+            taken = new Array(len);
+        if (n > len)
+            throw new RangeError("getRandom: more elements taken than available");
+        while (n--) {
+            var x = Math.floor(Math.random() * len);
+            result[n] = arr[x in taken ? taken[x] : x];
+            taken[x] = --len in taken ? taken[len] : len;
         }
+        return result;
+    }
 
-        function GetRus(value, index, array) {
-            return value.Rus;
-        }
+    function GetRus(value, index, array) {
+        return value.Rus;
+    }
 
-        function Render(cont, arr) {
-            $('#question')[0].innerText = cont.Eng;
+    function Render(cont, arr) {
+        $('#question')[0].innerText = cont.Eng;
 
-            var arr2 = arr.slice();
-            arr2.push(cont);
-            console.log(arr2);
+        var arr2 = arr.slice();
+        arr2.push(cont);
+        console.log(arr2);
 
-            var shuffledAnswers = shuffle(arr2.map(GetRus));
-            console.log(shuffledAnswers);
+        var shuffledAnswers = shuffle(arr2.map(GetRus));
+        console.log(shuffledAnswers);
 
-            //устновить текст на labels
-            $('#radio1').next()[0].innerText = shuffledAnswers[0];
-            $('#radio2').next()[0].innerText = shuffledAnswers[1];
-            $('#radio3').next()[0].innerText = shuffledAnswers[2];
-            $('#radio4').next()[0].innerText = shuffledAnswers[3];
-        }
+        //устновить текст на labels
+        $('#radio1').next()[0].innerText = shuffledAnswers[0];
+        $('#radio2').next()[0].innerText = shuffledAnswers[1];
+        $('#radio3').next()[0].innerText = shuffledAnswers[2];
+        $('#radio4').next()[0].innerText = shuffledAnswers[3];
+    }
 
 
 </script>
