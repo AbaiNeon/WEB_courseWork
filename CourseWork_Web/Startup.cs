@@ -62,7 +62,7 @@ namespace CourseWork_Web
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=EngQuiz}/{action=Index}/{id?}");
+                    template: "{controller=Menu}/{action=Index}/{id?}");
             });
         }
     }
