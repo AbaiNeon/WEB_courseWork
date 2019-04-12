@@ -1,0 +1,180 @@
+﻿
+@{
+    ViewData["Title"] = "Game";
+}
+
+<style type="text/css">
+    .content {
+        margin-left: 500px;
+    }
+
+    .content div {
+        width: 100px;
+        height: 100px;
+        position: relative;
+    }
+
+    .div1 {
+        background-color: hotpink;
+        position: relative;
+    }
+
+    .div2 {
+        background-color: seagreen;
+        position: relative;
+    }
+
+    .div3 {
+        background-color: darkblue;
+        position: relative;
+    }
+
+    .div4 {
+        background-color: firebrick;
+        position: relative;
+    }
+
+    .backets {
+        position: relative;
+    }
+
+    .leftBacket {
+        width: 130px;
+        height: 130px;
+        position: absolute;
+        top: 290px;
+        left: 150px;
+        border-radius: 5px;
+        background-color: #F3823D;
+    }
+
+    .rightBacket {
+        width: 130px;
+        height: 130px;
+        position: absolute;
+        top: 290px;
+        left: 800px;
+        border-radius: 5px;
+        background-color: #A2DA33;
+    }
+
+    .bottomBacket {
+        width: 130px;
+        height: 130px;
+        position: absolute;
+        top: 600px;
+        left: 488px;
+        border-radius: 5px;
+        background-color: #5BB5F3;
+    }
+</style>
+
+<h2>Game</h2>
+
+<div class="backets">
+    <div class="leftBacket"></div>
+    <div class="rightBacket"></div>
+    <div class="bottomBacket"></div>
+</div>
+
+<div class="content">
+
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        //переменные
+        var isOver = false;
+        var taskColors = [];
+        var myAnswers = [];
+        var rightAnswers = 0;
+        var colors = ["#F3823D", "#5BB5F3", "#A2DA33"]; //оранж, гол, зел
+        //debugger;
+        function gameLost() {
+            isOver = true;
+
+            for(var i = 0; i < myAnswers.length; i++){
+                if(myAnswers[i] == taskColors[i]){
+                    rightAnswers+=1;
+                }
+            }
+            alert("Результат: " + rightAnswers + "/" + myAnswers.length);
+            console.log("task: " + taskColors)
+            console.log("myAnswers: " + myAnswers)
+        }
+        setTimeout(gameLost, 10000);
+
+        //генерация первых 4х боксов
+        for(var i = 0; i < 4; i++){
+            var $div = $('<div></div>');
+            var rand = Math.floor(Math.random()*colors.length);
+            $div.css("background-color", colors[rand]);
+            $div.css("border-radius", '25px');
+            $('.content').prepend($div);
+            taskColors.push(colors[rand]);
+        }
+
+        //движуха триггерится при нажатии клавиш курсора
+        //формируем массив цветов задания и массив цветов ответов и сравниваем
+        //animate()
+
+        $(document).keydown(function(e) {
+            if(isOver) {
+                return;
+            }
+
+            if(e.which == 40) {
+                // down
+                if ($(".content div:last-child").is(':animated')) return;
+
+                //формируем массив ответов
+                myAnswers.push('#5BB5F3');
+                console.log(myAnswers);
+
+                //рандомные цвета бакграунда из массива
+                var $newDiv = $('<div></div>');
+                var rand = Math.floor(Math.random()*colors.length);
+                $newDiv.css("background-color", colors[rand]);
+                $newDiv.css("border-radius", '25px');
+
+                //select last child
+                $('.content div:last-child').animate({'top': '+=400px'},30);
+                //exclude old, insert new
+                $('.content div:last-child').fadeOut(50, function() { $(this).remove(); });
+                $('.content').prepend($newDiv);
+                taskColors.push(colors[rand]);
+            }else if(e.which == 37){
+                //left
+                if ($(".content div:last-child").is(':animated')) return;
+
+                myAnswers.push('#F3823D');
+
+                var $newDiv = $('<div></div>');
+                var rand = Math.floor(Math.random()*colors.length);
+                $newDiv.css("background-color", colors[rand]);
+                $newDiv.css("border-radius", '25px');
+
+                $('.content div:last-child').animate({'left': '-=400px'}, 30);
+                $('.content div:last-child').fadeOut(50, function() { $(this).remove(); });
+                $('.content').prepend($newDiv);
+                taskColors.push(colors[rand]);
+            }else if(e.which == 39){
+                //right
+                if ($(".content div:last-child").is(':animated')) return;
+
+                myAnswers.push('#A2DA33');
+
+                var $newDiv = $('<div></div>');
+                var rand = Math.floor(Math.random()*colors.length);
+                $newDiv.css("background-color", colors[rand]);
+                $newDiv.css("border-radius", '25px');
+
+                $('.content div:last-child').animate({'left': '+=400px'}, 30);
+                $('.content div:last-child').fadeOut(50, function() { $(this).remove(); });
+                $('.content').prepend($newDiv);
+                taskColors.push(colors[rand]);
+            }
+            });
+    });
+</script>
