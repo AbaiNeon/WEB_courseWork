@@ -3,17 +3,24 @@
     
 }
 
+
+
 <div class="container">
     <div class="text-center">
         <h2>Menu</h2>
-        <div class="row form-group">
-            <a href="@Url.Action("Index", "EngQuiz")" class="btn btn-primary" style="width:200px;">Start test</a>
-        </div>
-        <div class="row form-group">
-            <a href="@Url.Action("Index", "Contents")" class="btn btn-primary" style="width:200px;">Content</a>
-        </div>
         <div class="row">
-            <a href="@Url.Action("Index", "SquareGame")" class="btn btn-primary" style="width:200px;">Square Game</a>
+            <div class="col-md-12">
+                <a href="@Url.Action("Index", "EngQuiz")" class="btn btn-primary" style="width:120px;height:120px;line-height:7">Start test</a>
+                <a href="@Url.Action("Index", "Contents")" class="btn btn-primary" style="width:120px;height:120px;line-height:7">Content</a>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top:4px;">
+            <div class="col-md-12">
+                <a href="@Url.Action("Index", "SquareGame")" class="btn btn-primary" style="width:120px;height:120px;line-height:7"><span class="">Square Game</span></a>
+                <a href="@Url.Action("Index", "SquareGame")" class="btn btn-primary" style="width:120px;height:120px;line-height:7"><span class="">Square Game</span></a>
+            </div>
+            
         </div>
     </div>
     
