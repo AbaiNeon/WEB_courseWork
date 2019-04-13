@@ -1,6 +1,6 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Game";
+    Layout = "_Layout2";
 }
 
 <style type="text/css">
@@ -69,8 +69,6 @@
     }
 </style>
 
-<h2>Game</h2>
-
 <div class="backets">
     <div class="leftBacket"></div>
     <div class="rightBacket"></div>
@@ -83,7 +81,7 @@
 
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         //переменные
         var isOver = false;
         var taskColors = [];
@@ -94,9 +92,9 @@
         function gameLost() {
             isOver = true;
 
-            for(var i = 0; i < myAnswers.length; i++){
-                if(myAnswers[i] == taskColors[i]){
-                    rightAnswers+=1;
+            for (var i = 0; i < myAnswers.length; i++) {
+                if (myAnswers[i] == taskColors[i]) {
+                    rightAnswers += 1;
                 }
             }
             alert("Результат: " + rightAnswers + "/" + myAnswers.length);
@@ -106,9 +104,9 @@
         setTimeout(gameLost, 10000);
 
         //генерация первых 4х боксов
-        for(var i = 0; i < 4; i++){
+        for (var i = 0; i < 4; i++) {
             var $div = $('<div></div>');
-            var rand = Math.floor(Math.random()*colors.length);
+            var rand = Math.floor(Math.random() * colors.length);
             $div.css("background-color", colors[rand]);
             $div.css("border-radius", '25px');
             $('.content').prepend($div);
@@ -119,12 +117,12 @@
         //формируем массив цветов задания и массив цветов ответов и сравниваем
         //animate()
 
-        $(document).keydown(function(e) {
-            if(isOver) {
+        $(document).keydown(function (e) {
+            if (isOver) {
                 return;
             }
 
-            if(e.which == 40) {
+            if (e.which == 40) {
                 // down
                 if ($(".content div:last-child").is(':animated')) return;
 
@@ -134,47 +132,47 @@
 
                 //рандомные цвета бакграунда из массива
                 var $newDiv = $('<div></div>');
-                var rand = Math.floor(Math.random()*colors.length);
+                var rand = Math.floor(Math.random() * colors.length);
                 $newDiv.css("background-color", colors[rand]);
                 $newDiv.css("border-radius", '25px');
 
                 //select last child
-                $('.content div:last-child').animate({'top': '+=400px'},30);
+                $('.content div:last-child').animate({ 'top': '+=200px' }, 30);
                 //exclude old, insert new
-                $('.content div:last-child').fadeOut(50, function() { $(this).remove(); });
+                $('.content div:last-child').fadeOut(50, function () { $(this).remove(); });
                 $('.content').prepend($newDiv);
                 taskColors.push(colors[rand]);
-            }else if(e.which == 37){
+            } else if (e.which == 37) {
                 //left
                 if ($(".content div:last-child").is(':animated')) return;
 
                 myAnswers.push('#F3823D');
 
                 var $newDiv = $('<div></div>');
-                var rand = Math.floor(Math.random()*colors.length);
+                var rand = Math.floor(Math.random() * colors.length);
                 $newDiv.css("background-color", colors[rand]);
                 $newDiv.css("border-radius", '25px');
 
-                $('.content div:last-child').animate({'left': '-=400px'}, 30);
-                $('.content div:last-child').fadeOut(50, function() { $(this).remove(); });
+                $('.content div:last-child').animate({ 'left': '-=400px' }, 30);
+                $('.content div:last-child').fadeOut(50, function () { $(this).remove(); });
                 $('.content').prepend($newDiv);
                 taskColors.push(colors[rand]);
-            }else if(e.which == 39){
+            } else if (e.which == 39) {
                 //right
                 if ($(".content div:last-child").is(':animated')) return;
 
                 myAnswers.push('#A2DA33');
 
                 var $newDiv = $('<div></div>');
-                var rand = Math.floor(Math.random()*colors.length);
+                var rand = Math.floor(Math.random() * colors.length);
                 $newDiv.css("background-color", colors[rand]);
                 $newDiv.css("border-radius", '25px');
 
-                $('.content div:last-child').animate({'left': '+=400px'}, 30);
-                $('.content div:last-child').fadeOut(50, function() { $(this).remove(); });
+                $('.content div:last-child').animate({ 'left': '+=400px' }, 30);
+                $('.content div:last-child').fadeOut(50, function () { $(this).remove(); });
                 $('.content').prepend($newDiv);
                 taskColors.push(colors[rand]);
             }
-            });
+        });
     });
 </script>

@@ -25,8 +25,6 @@ namespace CourseWork_Web.Controllers
         {
             var content = _db.Contents.OrderBy(c => Guid.NewGuid()).Take(20).ToList();
 
-        
-
             return View(content);
         }
 
