@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Fast Read";
+}
+
+<script>
+    $(document).ready(function () {
+        $("#btnProcess").click(function () {
+            var inputText = $("#taInput").val();
+
+            $.ajax({
+                url: "@Url.Action("Process", "FastRead")",
+                data: {
+                    inputText: inputText
+                },
+                type: 'POST',
+                success: function (data) {
+                    $("#taOutput").val(data)
+                }
+            })
+        })
+    })
+
+</script>
+
+<div class="container">
+    <div class="row text-center form-group">
+        <textarea id="taInput" class="form-control" rows="6" placeholder="Paste your text"></textarea>
+    </div>
+    <div class="row text-center form-group">
+        <button id="btnProcess" >Process</button>
+    </div>
+    <div class="row text-center form-group"">
+        <textarea id="taOutput" class="form-control" rows="6"></textarea>
+    </div>
+</div>
+
+
+
