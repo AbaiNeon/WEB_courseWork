@@ -4,19 +4,34 @@
 
 <script>
     $(document).ready(function () {
-        $("#btnProcess").click(function () {
-            var inputText = $("#taInput").val();
+        function Proccess(text) {
+            var words = text.split(/\s*[,|!|?|.|-|(|)|:|;| ]\s*/);
 
-            $.ajax({
-                url: "@Url.Action("Process", "FastRead")",
-                data: {
-                    inputText: inputText
-                },
-                type: 'POST',
-                success: function (data) {
-                    $("#taOutput").val(data)
+            for (var i = 0; i < words.length; i++) {
+                if (i % 2 != 0) {
+                    words[i] = ShuffleWord(words[i]);
                 }
-            })
+            }
+            return words.join(" ");
+        }
+
+        function ShuffleWord(word) {
+            var a = word.split(""),
+                n = a.length;
+
+            for (var i = n - 2; i > 2; i--) {
+                var j = Math.floor(Math.random() * (i - 1)) + 2;
+                var tmp = a[i];
+                a[i] = a[j];
+                a[j] = tmp;
+            }
+            return a.join("");
+        }
+
+        $("#btnProcess").click(function () {
+            var text = $("#taInput").val();
+            $("#taOutput").val(Proccess(text));
+
         })
     })
 
